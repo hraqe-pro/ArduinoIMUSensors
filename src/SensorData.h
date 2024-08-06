@@ -5,11 +5,20 @@
 
 
 struct SensorData {
-    float ax;
-    float ay;
-    float az;
-    float gx;
-    float gy;
-    float gz;
+    double ax;
+    double ay;
+    double az;
+    double gx;
+    double gy;
+    double gz;
+    double magx;
+    double magy;
+    double magz;
+    double magN;
+    double th;
+    double tm;
+    double ts;
+    double lati;
+    double loni;
 };
 #endif //SENSORDATA_H

@@ -2,11 +2,12 @@
 #include <ArduinoBLE.h>
 #include <Arduino_LSM6DSOX.h>
 #include "SensorData.h"
+#include "Mag.h"
 #include <Wire.h>
 #include <VMA430_GPS.h>
 #include "DFRobot_BMM150.h"
 
-DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4);
+DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
 
 #define LSM6DSOX_ADRESS 0x6A
 #define CTRL1_A 0x10 //accel
@@ -14,6 +15,7 @@ DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4);
 #define yup 1
 #define nope 0
 
+//mag do wyjebania
 #if defined(ESP32) || defined(ESP8266)
   #define BMM150_CS D3
 #elif defined(__AVR__) || defined(ARDUINO_SAM_ZERO)
@@ -186,6 +188,7 @@ if (central) {
       data.gz = zg;
 
       //mag
+     
       data.magx = magData.x;
       data.magy = magData.y;      
       data.magz = magData.z;

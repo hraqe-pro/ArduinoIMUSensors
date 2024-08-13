@@ -269,7 +269,7 @@ if (central) {
       Serial.print('\t');
       Serial.print(intSensorData.az);
       Serial.print('\t');
-       Serial.print(intSensorData.magx);
+      Serial.print(intSensorData.magx);
       Serial.print('\t');
       Serial.print(intSensorData.magy);
       Serial.print('\t');

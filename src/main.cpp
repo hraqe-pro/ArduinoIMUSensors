@@ -7,7 +7,7 @@
 #include <VMA430_GPS.h>
 #include "DFRobot_BMM150.h"
 
-DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
+//DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
 
 #define LSM6DSOX_ADRESS 0x6A
 #define CTRL1_A 0x10 //accel
@@ -16,13 +16,15 @@ DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
 #define nope 0
 
 //mag do wyjebania
+/*
 #if defined(ESP32) || defined(ESP8266)
   #define BMM150_CS D3
 #elif defined(__AVR__) || defined(ARDUINO_SAM_ZERO)
   #define BMM150_CS 3
 #elif (defined NRF5)
   #define BMM150_CS 2  //The corresponding silkscreen on the development board is the pin P2
-#endif
+#endif*/
+Mag mag;
 
 
 
@@ -62,6 +64,7 @@ void setup() {
   Serial.begin(115200);
 
   //mag
+  /*
   while(bmm150.begin()){
     Serial.println("bmm150 init failed, Please try again!");
     delay(1000);
@@ -69,7 +72,9 @@ void setup() {
   bmm150.setOperationMode(BMM150_POWERMODE_NORMAL);
   bmm150.setPresetMode(BMM150_PRESETMODE_HIGHACCURACY);
   bmm150.setRate(BMM150_DATA_RATE_30HZ);
-  bmm150.setMeasurementXYZ();
+  bmm150.setMeasurementXYZ();*/
+  
+  mag.begin();
   
 
 
@@ -168,6 +173,7 @@ if (central) {
 
   while (central.connected()) {
     SensorData data;
+    
     if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable()) {
       //imu
       float xa, ya, za;
@@ -175,9 +181,7 @@ if (central) {
       IMU.readAcceleration(xa, ya, za);
       IMU.readGyroscope(xg, yg, zg);
 
-      //mag
-      sBmm150MagData_t magData = bmm150.getGeomagneticData();
-      float compassDegree = bmm150.getCompassDegree();
+      
 
       //accel & gyro
       data.ax = xa;
@@ -188,11 +192,15 @@ if (central) {
       data.gz = zg;
 
       //mag
-     
+      /*sBmm150MagData_t magData = bmm150.getGeomagneticData();
+      float compassDegree = bmm150.getCompassDegree();
       data.magx = magData.x;
       data.magy = magData.y;      
       data.magz = magData.z;
-      data.magN = compassDegree;      
+      data.magN = compassDegree;*/
+      
+      mag.DataReader(data);
+
       
       //gps
       if (gps.getUBX_packet()) {

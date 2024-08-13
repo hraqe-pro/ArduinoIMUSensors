@@ -1,5 +1,5 @@
 #ifndef SCALEMATRIX_H
-#define SCALEMATRIX_X
+#define SCALEMATRIX_H
 
 struct ScaleMatrix
 {

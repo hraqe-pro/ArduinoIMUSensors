@@ -16,6 +16,8 @@ DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4);
 Mag::Mag(const BiasMatrix &biasMatrixInstance, const ScaleMatrix &scaleMatrixInstance, const CombinedMatrix &combinedMatrixInstance)
 : localBiasMatrix(biasMatrixInstance),localScaleMatrix(scaleMatrixInstance), localCombinedMatrix(combinedMatrixInstance) {
 }
+Mag::Mag(){
+}
 
 void Mag::begin() {
     //tutaj jakis return od bmm ale trzeba pomyslec, narazie wrzucam kopie tego wywołania z maina
@@ -29,7 +31,7 @@ void Mag::begin() {
     bmm150.setMeasurementXYZ();
 }
 
-void Mag::DataReader(SensorData& data, double x, double y, double z) {
+void Mag::DataReader(SensorData& data) {
     sBmm150MagData_t magData = bmm150.getGeomagneticData();
     
     data.magx = magData.x;

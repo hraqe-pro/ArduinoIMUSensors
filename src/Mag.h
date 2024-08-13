@@ -14,10 +14,12 @@ private:
     BiasMatrix localBiasMatrix;
     ScaleMatrix localScaleMatrix;
     CombinedMatrix localCombinedMatrix;
+    //DFRobot_BMM150_I2C bmm150;
 public: 
     Mag(const BiasMatrix& biasMatrixInstance, const ScaleMatrix& scaleMatrixInstance, const CombinedMatrix& combinedMatrixInstance);
-void begin();
-void DataReader(SensorData& data, double x, double y, double z);
+    Mag();
+    void begin();
+    void DataReader(SensorData& data);
     //tu trzeba zrobić operacje liczbowe do liczenia kalibracji za pomoca naszych struktur
 
     //nasza nowa klasa nie ma dodanych żadnych zależnośći w main.cpp , należy nic tam nie dodawać ani nie usuwać zanim nie zostanie ukończona ta klasa.

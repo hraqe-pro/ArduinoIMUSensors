@@ -20,7 +20,7 @@ Mag::Mag(){
 }
 
 void Mag::begin() {
-    //tutaj jakis return od bmm ale trzeba pomyslec, narazie wrzucam kopie tego wywołania z maina
+    //działa wszystko teraz
     while(bmm150.begin()){
         Serial.println("bmm150 init failed, Please try again!");
         delay(1000);
@@ -31,10 +31,65 @@ void Mag::begin() {
     bmm150.setMeasurementXYZ();
 }
 
-void Mag::DataReader(SensorData& data) {
+//używaj albo DataReader albo Calibration, nigdy obu naraz
+void Mag::DataReader(SensorData& data) { //data without calibration
     sBmm150MagData_t magData = bmm150.getGeomagneticData();
     
     data.magx = magData.x;
     data.magy = magData.y;      
     data.magz = magData.z;
+}
+
+void Mag::Calibration(SensorData& data) { //calibrated data
+    sBmm150MagData_t magData = bmm150.getGeomagneticData();
+    double raw[3] = {magData.x, magData.y, magData.z};
+    double biasedData[3];
+    double corrected[3];
+    double calibrated[3];
+
+    for (size_t i = 0; i < 3; i++)
+    {
+      biasedData[i] = raw[i] - globalBiasMatrix.biasMatrix[i];
+    }
+    for (size_t i = 0; i < 3; i++)
+    {
+      corrected[i] = 0;
+      for (size_t j = 0; j < 3; j++)
+      {
+        corrected[i] += biasedData[j] * globalScaleMatrix.scaleMatrix[i][j];
+      }
+    }
+    for (size_t i = 0; i < 3; i++)
+    {
+      calibrated[i] = 0;
+      for (size_t j = 0; j < 3; j++)
+      {
+        calibrated[i] += corrected[j] * globalCombinedMatrix.combinedMatrix[i][j];
+      }
+    }
+    /*for (size_t i = 0; i < 3; i++)
+    {
+      corrected[i] = 0;
+      for (size_t j = 0; j < 3; j++)
+      {
+        corrected[i] += globalScaleMatrix.scaleMatrix[i][j] * (raw[j] - globalBiasMatrix.biasMatrix[j]);
+      }
+      corrected[i] *= globalCombinedMatrix.combinedMatrix[i][i];
+    }*/
+    data.magx = magData.x;
+    data.magy = magData.y;      
+    data.magz = magData.z;
+    Serial.print("RAW: ");
+    Serial.print(raw[0]);
+    Serial.print(",");
+    Serial.print(raw[1]);
+    Serial.print(",");
+    Serial.print(raw[2]);
+    Serial.print(" | CORRECTED: ");
+    Serial.print(calibrated[0]);
+    Serial.print(",");
+    Serial.print(calibrated[1]);
+    Serial.print(",");
+    Serial.println(calibrated[2]);
+
 }

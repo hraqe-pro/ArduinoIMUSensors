@@ -3,7 +3,7 @@
 
 struct BiasMatrix
 {
-    float biasMatrix[3];
+    double biasMatrix[3];
 };
 extern BiasMatrix globalBiasMatrix;
 #endif

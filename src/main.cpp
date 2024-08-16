@@ -199,8 +199,8 @@ if (central) {
       data.magz = magData.z;
       data.magN = compassDegree;*/
       
-      mag.DataReader(data);
-
+      //mag.DataReader(data);
+      mag.Calibration(data);
       
       //gps
       if (gps.getUBX_packet()) {

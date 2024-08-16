@@ -3,7 +3,7 @@
 
 struct CombinedMatrix
 {
-    float combinedMatrix[3][3];
+    double combinedMatrix[3][3];
 };
 extern CombinedMatrix globalCombinedMatrix;
 #endif

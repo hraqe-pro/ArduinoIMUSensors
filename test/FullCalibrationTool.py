@@ -23,6 +23,7 @@ calibrated_data_queue = Queue()
 # Listy do przechowywania danych
 raw_data = []
 calibrated_data = []
+segments = []  # Lista do przechowywania odcinków
 
 # Event do zatrzymania wątku
 stop_event = Event()
@@ -129,7 +130,7 @@ def calculate_bearing(lat1, lon1, lat2, lon2):
     
     return bearing
 
-def plot_geographical(lat1, lon1, lat2, lon2, declination, direction):
+def plot_geographical(lat1, lon1, lat2, lon2, declination, direction, label):
     """
     Funkcja rysuje wykres na podstawie współrzędnych geograficznych oraz kąta.
     """
@@ -147,7 +148,7 @@ def plot_geographical(lat1, lon1, lat2, lon2, declination, direction):
         x2 = -x2
 
     # Rysowanie linii od punktu startowego do punktu końcowego
-    ax1.plot([x1, x2], [y1, y2], 'b', label='Odcinek')
+    ax1.plot([x1, x2], [y1, y2], label=label)
 
     # Rysowanie linii reprezentującej północ geograficzną (oś Y)
     north_y = y1 + 0.2 * max(abs(x2), abs(y2))
@@ -177,6 +178,45 @@ def plot_geographical(lat1, lon1, lat2, lon2, declination, direction):
     ax1.set_title("Kąty względem północy geograficznej i magnetycznej")
     ax1.grid(True)
     ax1.set_aspect('equal')  # Ustawienie proporcji 1:1
+
+def add_segment():
+    try:
+        lat1 = float(entry_lat1.get())
+        lon1 = float(entry_lon1.get())
+        lat2 = float(entry_lat2.get())
+        lon2 = float(entry_lon2.get())
+        declination = float(entry_declination.get())
+        direction = entry_direction.get().lower()
+        label = entry_label.get()
+
+        # Dodaj segment do listy
+        segments.append((lat1, lon1, lat2, lon2, declination, direction, label))
+
+        # Wyczyszczenie wykresu i ponowne rysowanie wszystkich segmentów
+        ax1.clear()
+        for segment in segments:
+            lat1, lon1, lat2, lon2, declination, direction, label = segment
+            plot_geographical(lat1, lon1, lat2, lon2, declination, direction, label)
+        canvas2.draw()
+    except ValueError:
+        print("Błędne dane wejściowe. Upewnij się, że wszystkie pola są wypełnione poprawnie.")
+
+def remove_segment():
+    try:
+        selected_label = entry_remove_label.get()
+
+        # Filtruj segmenty, aby usunąć ten z wybraną nazwą
+        global segments
+        segments = [seg for seg in segments if seg[6] != selected_label]
+
+        # Wyczyszczenie wykresu i ponowne rysowanie wszystkich segmentów
+        ax1.clear()
+        for segment in segments:
+            lat1, lon1, lat2, lon2, declination, direction, label = segment
+            plot_geographical(lat1, lon1, lat2, lon2, declination, direction, label)
+        canvas2.draw()
+    except ValueError:
+        print("Błędne dane wejściowe. Upewnij się, że wszystkie pola są wypełnione poprawnie.")
 
 def read_serial():
     try:
@@ -229,12 +269,13 @@ def calculate_plot():
         lon2 = float(entry_lon2.get())
         declination = float(entry_declination.get())
         direction = entry_direction.get().lower()
+        label = entry_label.get()
 
         # Wyczyszczenie poprzednich rysunków
         ax1.clear()
 
         # Rysowanie wykresu geograficznego
-        plot_geographical(lat1, lon1, lat2, lon2, declination, direction)
+        plot_geographical(lat1, lon1, lat2, lon2, declination, direction, label)
         canvas2.draw()
 
     except ValueError:
@@ -310,7 +351,17 @@ tk.Label(tab2, text="Kierunek deklinacji (wschód/zachód)").pack()
 entry_direction = tk.Entry(tab2)
 entry_direction.pack()
 
-tk.Button(tab2, text="Akceptuj", command=calculate_plot).pack()
+tk.Label(tab2, text="Nazwa odcinka").pack()
+entry_label = tk.Entry(tab2)
+entry_label.pack()
+
+tk.Button(tab2, text="Dodaj odcinek", command=add_segment).pack()
+
+tk.Label(tab2, text="Nazwa odcinka do usunięcia").pack()
+entry_remove_label = tk.Entry(tab2)
+entry_remove_label.pack()
+
+tk.Button(tab2, text="Usuń odcinek", command=remove_segment).pack()
 
 # Inicjalizacja pustego wykresu w zakładce specjalnej
 ax1.set_title("Pusty wykres geograficzny")

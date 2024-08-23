@@ -16,7 +16,6 @@ class MagDataToQuaternion {
         MagDataToQuaternion();
         void normalize(&float x, &float y, &float z);
         VectorToNormalize calculateQuaternion(float magDataX, float magDataY, float magDataZ, float earthMagRefX, float earthMagRefY, float earthMagRefZ);
-        VectorToNormalize adjustOrientationToReference(qemRef)
+        VectorToNormalize adjustOrientationToReference(qemRef);
 }   
-
 #endif

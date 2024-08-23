@@ -39,6 +39,11 @@ VectorToNormalize MagDataToQuaternion::calculateQuaternion(float magDataX, float
 }
 
 VectorToNormalize MagDataToQuaternion::adjustOrientationToReference(qemRef) {
-    
-    return VectorToNormalize();
+    VectorToNormalize reference = {1.0, 0.0, 0.0, 0.0}; /// tu trzeba sie upewnić w kwestii tego wektora odniesienia na podstawie układu współrzędnych czy takie założenia są prawidłowe
+    //quaternion's product
+    qemFinal.w = qemRef.w * reference.w - qemRef.x * reference.x - qemRef.y * reference.y - qemRef.z * reference.z;
+    qemFinal.w = qemRef.w * reference.x - qemRef.x * reference.w - qemRef.y * reference.z - qemRef.z * reference.y;
+    qemFinal.w = qemRef.w * reference.y - qemRef.x * reference.z - qemRef.y * reference.w - qemRef.z * reference.x;
+    qemFinal.w = qemRef.w * reference.z - qemRef.x * reference.y - qemRef.y * reference.x - qemRef.z * reference.w;
+    return qemFinal;
 }

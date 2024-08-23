@@ -13,9 +13,9 @@ DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4);
 #endif
 
 
-Mag::Mag(const BiasMatrix &biasMatrixInstance, const ScaleMatrix &scaleMatrixInstance, const CombinedMatrix &combinedMatrixInstance)
+/*Mag::Mag(const BiasMatrix &biasMatrixInstance, const ScaleMatrix &scaleMatrixInstance, const CombinedMatrix &combinedMatrixInstance)
 : localBiasMatrix(biasMatrixInstance),localScaleMatrix(scaleMatrixInstance), localCombinedMatrix(combinedMatrixInstance) {
-}
+}*/
 Mag::Mag(){
 }
 

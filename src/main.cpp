@@ -7,6 +7,7 @@
 #include <VMA430_GPS.h>
 #include "DFRobot_BMM150.h"
 
+
 //DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
 
 #define LSM6DSOX_ADRESS 0x6A

@@ -8,6 +8,8 @@ from threading import Thread, Event
 from queue import Queue
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from math import radians, degrees, atan2, sin, cos, sqrt, asin
+import math
+import os
 
 # Ustawienia portu szeregowego
 port = 'COM6'
@@ -74,9 +76,14 @@ def update_plot():
         
         # Rysowanie precyzyjnego kompasa
         if calibrated_data_np.shape[0] > 0:
-            x, y = calibrated_data_np[-1][0], calibrated_data_np[-1][1]
-            heading = np.arctan2(y, x) * (180 / np.pi)
-            ax4.arrow(0, 0, np.cos(np.deg2rad(heading)), np.sin(np.deg2rad(heading)), head_width=0.05, head_length=0.1, fc='k', ec='k')
+            x = calibrated_data_np[-1][0]
+            y = calibrated_data_np[-1][1]  # Poprawne przypisanie osi
+            azymut = math.atan2(y, x)
+
+            ax4.arrow(0, 0, 1, 0, head_width=0.05, head_length=0.1, fc='r', ec='r')
+            ax4.text(1.1, 0, 'N', ha='center', va='center', color='r')
+        
+            ax4.arrow(0, 0, np.cos(azymut), np.sin(azymut), head_width=0.05, head_length=0.1, fc='k', ec='k')
             ax4.set_xlim(-1, 1)
             ax4.set_ylim(-1, 1)
             ax4.set_title('Kompas')
@@ -86,12 +93,19 @@ def update_plot():
             circle = plt.Circle((0, 0), 1, color='black', fill=False)
             ax4.add_artist(circle)
             for angle in np.arange(0, 360, 0.5):
-                x_tick = np.cos(np.deg2rad(angle))
-                y_tick = np.sin(np.deg2rad(angle))
+                x_tick = np.cos(np.radians(angle))
+                y_tick = np.sin(np.radians(angle))
                 if angle % 10 == 0:
                     ax4.text(x_tick * 1.1, y_tick * 1.1, f'{int(angle)}°', ha='center', va='center')
                 else:
                     ax4.plot([x_tick * 0.95, x_tick * 1.05], [y_tick * 0.95, y_tick * 1.05], color='black')
+
+            print("X: " + str(calibrated_data_np[-1][0]))
+            print("Y: " + str(calibrated_data_np[-1][1]))
+            print("Z: " + str(calibrated_data_np[-1][2]))
+            print("azymut" + str(azymut))
+
+            #os.system('cls')
         
         canvas.draw()
 

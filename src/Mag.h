@@ -16,7 +16,7 @@ private:
     CombinedMatrix localCombinedMatrix;
     //DFRobot_BMM150_I2C bmm150;
 public: 
-    Mag(const BiasMatrix& biasMatrixInstance, const ScaleMatrix& scaleMatrixInstance, const CombinedMatrix& combinedMatrixInstance);
+    //Mag(const BiasMatrix& biasMatrixInstance, const ScaleMatrix& scaleMatrixInstance, const CombinedMatrix& combinedMatrixInstance);
     Mag();
     void begin();
     void DataReader(SensorData& data);

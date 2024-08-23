@@ -5,5 +5,5 @@ struct BiasMatrix
 {
     double biasMatrix[3];
 };
-extern BiasMatrix globalBiasMatrix;
+extern const BiasMatrix globalBiasMatrix;
 #endif

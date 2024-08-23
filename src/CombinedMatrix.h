@@ -5,5 +5,5 @@ struct CombinedMatrix
 {
     double combinedMatrix[3][3];
 };
-extern CombinedMatrix globalCombinedMatrix;
+extern const CombinedMatrix globalCombinedMatrix;
 #endif

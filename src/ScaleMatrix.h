@@ -5,6 +5,6 @@ struct ScaleMatrix
 {
     double scaleMatrix[3][3];
 };
-extern ScaleMatrix globalScaleMatrix;
+extern const ScaleMatrix globalScaleMatrix;
 
 #endif 

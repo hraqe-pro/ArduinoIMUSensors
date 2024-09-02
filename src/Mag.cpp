@@ -40,12 +40,13 @@ void Mag::DataReader(SensorData& data) { //data without calibration
     data.magz = magData.z;
 }
 
-void Mag::Calibration(SensorData& data) { //calibrated data
+MagStructure Mag::Calibration(SensorData& data) { //calibrated data
     sBmm150MagData_t magData = bmm150.getGeomagneticData();
     double raw[3] = {magData.x, magData.y, magData.z};
     double biasedData[3];
     double corrected[3];
-    double calibrated[3];
+    //double calibrated[3];
+    MagStructure calibrated;
 
     for (size_t i = 0; i < 3; i++)
     {
@@ -91,5 +92,5 @@ void Mag::Calibration(SensorData& data) { //calibrated data
     Serial.print(calibrated[1]);
     Serial.print(",");
     Serial.println(calibrated[2]);
-
+  return calibrated;
 }

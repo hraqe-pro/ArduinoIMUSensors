@@ -5,6 +5,8 @@
 #include "QuaternionEarthMatrix.h"
 #include "VectorToNormalize.h"
 #include <math.h>
+#include "SensorData.h"
+#include "MagStructure.h"
 
 class MagDataToQuaternion {
     private:
@@ -14,10 +16,11 @@ class MagDataToQuaternion {
         VectorToNormalize EarthMagneticVector;
         VectorToNormalize MagnetometerDataVector;
         
+        
     public:
         MagDataToQuaternion();
-        void normalize(float& x, float& y, float& z);
-        QuaternionEarthMatrix calculateQuaternion(float magDataX, float magDataY, float magDataZ, float earthMagRefX, float earthMagRefY, float earthMagRefZ);
+        void normalize(double& x, double& y, double& z);
+        QuaternionEarthMatrix calculateQuaternion(MagStructure& magPrimeStructure, double earthMagRefX, double earthMagRefY, double earthMagRefZ);
         QuaternionEarthMatrix adjustOrientationToReference(QuaternionEarthMatrix qemRef);
 };   
 #endif

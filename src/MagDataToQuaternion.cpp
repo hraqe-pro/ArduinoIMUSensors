@@ -1,30 +1,30 @@
 #include "MagDataToQuaternion.h"
 #include <Arduino.h>
 
-MagDataToQuaternion::MagDataToQuaternion()
-{
+MagDataToQuaternion::MagDataToQuaternion() {
 }
 
-void MagDataToQuaternion::normalize(float &x, float &y, float &z)
-{
-    float length = sqrt (x * x + y * y + z * z);
+void MagDataToQuaternion::normalize(double &x, double &y, double &z) {
+    double length = sqrt (x * x + y * y + z * z);
     if (length != 0) {
         x /= length;
         y /= length;
         z /= length;
     }
 }
-
-QuaternionEarthMatrix MagDataToQuaternion::calculateQuaternion(float magDataX, float magDataY, float magDataZ, float earthMagRefX, float earthMagRefY, float earthMagRefZ) {
-    MagDataToQuaternion::normalize(magDataX, magDataY, magDataZ); //magnetometer data vector normalization
+SensorData data;
+Mag magPrime;
+MagStructure magPrimeStructure = magPrime.Calibration(data);
+QuaternionEarthMatrix MagDataToQuaternion::calculateQuaternion(MagStructure& magPrimeStructure, double earthMagRefX, double earthMagRefY, double earthMagRefZ) {
+    MagDataToQuaternion::normalize(magPrimeStructure.x, magPrimeStructure.y, magPrimeStructure.z); //magnetometer data vector normalization
     MagDataToQuaternion::normalize(earthMagRefX, earthMagRefY, earthMagRefZ); //earth magnetic field vector normalization
     //vector product - rotation axis 
-    float vx = earthMagRefY * magDataZ - earthMagRefZ * magDataY;
-    float vy = earthMagRefZ * magDataX - earthMagRefX * magDataZ;
-    float vz = earthMagRefX * magDataY - earthMagRefY * magDataX;
+    float vx = earthMagRefY * magPrimeStructure.z - earthMagRefZ * magPrimeStructure.y;
+    float vy = earthMagRefZ * magPrimeStructure.x - earthMagRefX * magPrimeStructure.z;
+    float vz = earthMagRefX * magPrimeStructure.y - earthMagRefY * magPrimeStructure.x;
     
     //scalar product - angle cosinus 
-    float dot_product = earthMagRefX * magDataX + earthMagRefY * magDataY + earthMagRefZ * magDataZ;
+    float dot_product = earthMagRefX * magPrimeStructure.x + earthMagRefY * magPrimeStructure.y + earthMagRefZ * magPrimeStructure.z;
 
     //rotation angle
     float theta = acos(dot_product);

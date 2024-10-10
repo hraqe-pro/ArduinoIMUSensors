@@ -6,6 +6,7 @@
 #include <Wire.h>
 #include <VMA430_GPS.h>
 #include "DFRobot_BMM150.h"
+#include "pico/multicore.h"
 
 
 //DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
@@ -16,7 +17,7 @@
 #define yup 1
 #define nope 0
 
-//mag do wyjebania
+//mag do usunięcia
 /*
 #if defined(ESP32) || defined(ESP8266)
   #define BMM150_CS D3
@@ -201,7 +202,8 @@ if (central) {
       data.magN = compassDegree;*/
       
       //mag.DataReader(data);
-      mag.Calibration(data);
+      mag.Calibration();
+      //mag.MagQuaternizer();
       
       //gps
       if (gps.getUBX_packet()) {

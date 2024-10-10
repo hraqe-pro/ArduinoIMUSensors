@@ -20,7 +20,7 @@ class MagDataToQuaternion {
     public:
         MagDataToQuaternion();
         void normalize(double& x, double& y, double& z);
-        QuaternionEarthMatrix calculateQuaternion(MagStructure& magPrimeStructure, double earthMagRefX, double earthMagRefY, double earthMagRefZ);
+        QuaternionEarthMatrix calculateQuaternion(double earthMagRefX, double earthMagRefY, double earthMagRefZ, MagStructure& magPrimeStructure);
         QuaternionEarthMatrix adjustOrientationToReference(QuaternionEarthMatrix qemRef);
 };   
 #endif

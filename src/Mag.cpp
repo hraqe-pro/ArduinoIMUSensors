@@ -39,15 +39,22 @@ void Mag::DataReader(SensorData& data) { //data without calibration
     data.magy = magData.y;      
     data.magz = magData.z;
 }
-
-MagStructure Mag::Calibration(SensorData& data) { //calibrated data
+void Mag::Normalize(double &x, double &y, double &z) {
+  double length = sqrt (x * x + y * y + z * z);
+    if (length != 0) {
+        x /= length;
+        y /= length;
+        z /= length;
+    }
+}
+MagStructure Mag::Calibration() { //calibrated data
     sBmm150MagData_t magData = bmm150.getGeomagneticData();
     double raw[3] = {magData.x, magData.y, magData.z};
     double biasedData[3];
     double corrected[3];
     //double calibrated[3];
     MagStructure calibrated;
-
+    //tu poniżej trzeba sprawdzić która wersja jest bardziej wydajna (optymalizacja w google):
     for (size_t i = 0; i < 3; i++)
     {
       biasedData[i] = raw[i] - globalBiasMatrix.biasMatrix[i];
@@ -77,9 +84,9 @@ MagStructure Mag::Calibration(SensorData& data) { //calibrated data
       }
       corrected[i] *= globalCombinedMatrix.combinedMatrix[i][i];
     }*/
-    data.magx = magData.x;
-    data.magy = magData.y;      
-    data.magz = magData.z;
+    
+    Mag::Normalize(calibrated[0], calibrated[1], calibrated[2]);
+   
     Serial.print("RAW: ");
     Serial.print(raw[0]);
     Serial.print(",");
@@ -94,3 +101,40 @@ MagStructure Mag::Calibration(SensorData& data) { //calibrated data
     Serial.println(calibrated[2]);
   return calibrated;
 }
+/*
+QuaternionEarthMatrix Mag::MagQuaternizer()
+{
+  MagDataToQuaternion MDTQ;
+  VectorStructure earthMagneticVectorRefStructure; 
+  //data from reference earth magnetic field vector 
+  earthMagneticVectorRefStructure.x = 19720.3 / 1000;
+  earthMagneticVectorRefStructure.y = 2191.0 / 1000;
+  earthMagneticVectorRefStructure.z = 45805.4 / 1000;
+  
+  Mag magPrime;
+  MagStructure magPrimeStructure = magPrime.Calibration();
+  QuaternionEarthMatrix qem = MDTQ.calculateQuaternion(earthMagneticVectorRefStructure.x, earthMagneticVectorRefStructure.y, earthMagneticVectorRefStructure.z, magPrimeStructure);
+  QuaternionEarthMatrix finalQuaternion = MDTQ.adjustOrientationToReference(qem);
+
+  
+  Serial.print("Final Quaternion: ");
+  Serial.print(finalQuaternion.w);
+  Serial.print(", ");
+  Serial.print(finalQuaternion.x);
+  Serial.print(", ");
+  Serial.print(finalQuaternion.y);
+  Serial.print(", ");
+  Serial.print(finalQuaternion.z);
+  
+  Serial.print(", ");
+  Serial.print(magPrimeStructure.x);
+  Serial.print(", ");
+  Serial.print(magPrimeStructure.y);
+  Serial.print(", ");
+  Serial.println(magPrimeStructure.z);
+  
+  
+  return finalQuaternion;
+}
+*/
+

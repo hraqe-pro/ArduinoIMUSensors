@@ -10,8 +10,8 @@
 #include "SensorData.h"
 #include "MagDataToQuaternion.h"
 #include "MagStructure.h"
-#include "VectorStructure.h"
-#include "QuaternionEarthMatrix.h"
+#include "Math/Vector.h"
+#include "Math/QuaternionEarthMatrix.h"
 
 class Mag {
 private:

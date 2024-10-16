@@ -104,7 +104,7 @@ MagStructure Mag::Calibration() { //calibrated data
 /*
 QuaternionEarthMatrix Mag::MagQuaternizer()
 {
-  MagDataToQuaternion MDTQ;
+   MagDataToQuaternion MDTQ;
   VectorStructure earthMagneticVectorRefStructure; 
   //data from reference earth magnetic field vector 
   earthMagneticVectorRefStructure.x = 19720.3 / 1000;

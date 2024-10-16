@@ -2,7 +2,7 @@
 #define MAGDATATOQUATERNION_H
 
 #include "Mag.h"
-#include "QuaternionEarthMatrix.h"
+#include "Math/QuaternionEarthMatrix.h"
 #include "VectorToNormalize.h"
 #include <math.h>
 #include "SensorData.h"

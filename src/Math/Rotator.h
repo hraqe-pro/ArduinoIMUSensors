@@ -2,6 +2,7 @@
 #define ROTATOR_H
 
 #include "BiasMatrix.h"
+#include <array>
 
 struct Rotator
 {
@@ -12,6 +13,12 @@ struct Rotator
     double pitch = 0;
     double yaw = 0;
     double roll = 0;
+
+    std::array<double, 3> ToArray() const;
+
+    QuaternionEarthMatrix ToQuaternion() const;
+
+    double YawToQuaternion() const;
 };
 
 Rotator operator-(const Rotator& thisRotator, const BiasMatrix& biasMatrix) {

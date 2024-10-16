@@ -5,6 +5,8 @@
 #include "BiasMatrix.h"
 #include "Math/QuaternionEarthMatrix.h"
 #include "Math/Rotator.h"
+#include "Math/Vector.h"
+#include "Math/KalmanFilter.h"
 
 class Gyro {
 private:
@@ -13,11 +15,19 @@ private:
     QuaternionEarthMatrix localQuaternion;
 
     Rotator rawData;
+
+    KalmanFilter3D kalmanFilter  = KalmanFilter3D(0.01, 0.1, 0.1);
 public:
 
     Gyro();
 
-    void BiasCutter(const BiasMatrix& biasData);
+    void Read();
+
+    Rotator BiasCutter(const BiasMatrix& biasData);
+
+    Vector GetCalibratedData();
+
+    Rotator GetRawData();
 };
 
 #endif

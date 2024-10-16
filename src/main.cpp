@@ -7,6 +7,7 @@
 #include <VMA430_GPS.h>
 #include "DFRobot_BMM150.h"
 #include "pico/multicore.h"
+#include "Gyro.h"
 
 
 //DFRobot_BMM150_I2C bmm150(&Wire, I2C_ADDRESS_4); //mag do wyjebania
@@ -28,7 +29,7 @@
 #endif*/
 Mag mag;
 
-
+Gyro gyro;
 
 
 struct IntSensorData {
@@ -61,6 +62,7 @@ static const uint32_t GPSBaud = 9600;
 /// pressure sensor datas
 const float  OffSet = 0.515 ;
 float V, P;
+
 
 void setup() {
   Serial.begin(115200);

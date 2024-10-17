@@ -4,15 +4,21 @@
 
 Gyro::Gyro()
 {
-    localBiasMatrix.biasMatrix = {-0.13015616316239317, 
-                            -0.25248730854700857, 
-                            0.11972280376068375};
+    localBiasMatrix.biasMatrix[0] = -0.13015616316239317; 
+    localBiasMatrix.biasMatrix[1] = -0.25248730854700857; 
+    localBiasMatrix.biasMatrix[2] = 0.11972280376068375;
 }
 void Gyro::Read()
 {
     if (IMU.gyroscopeAvailable())
     {
-        IMU.readGyroscope(rawData.pitch, rawData.yaw, rawData.roll);
+        float x;
+        float y;
+        float z;
+        IMU.readGyroscope(x, y, z);
+        rawData.pitch = x;
+        rawData.yaw = y;
+        rawData.roll = z;
     }
 }
 Rotator Gyro::BiasCutter(const BiasMatrix &biasData)

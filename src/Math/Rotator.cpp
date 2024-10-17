@@ -1,7 +1,8 @@
 #include "Rotator.h"
 #include "QuaternionEarthMatrix.h"
+#include <cmath>
 
-std::array<double, 3> Rotator::ToArray()
+std::array<double, 3> Rotator::ToArray() const
 {
     return std::array<double, 3> {pitch, yaw, roll};
 }
@@ -27,10 +28,10 @@ QuaternionEarthMatrix Rotator::ToQuaternion() const
     quaternion.y = cr * sp * cy + sr * cp * sy;
     quaternion.z = cr * cp * sy - sr * sp * cy;
 
-    return ;
+    return quaternion;
 }
 
-double Rotator::YawToQuaternion() const
+QuaternionEarthMatrix Rotator::YawToQuaternion() const
 {
     QuaternionEarthMatrix quaternion;
     quaternion.w = cos(yaw / 2);

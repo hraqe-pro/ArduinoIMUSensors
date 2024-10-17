@@ -22,5 +22,6 @@ class MagDataToQuaternion {
         void normalize(double& x, double& y, double& z);
         QuaternionEarthMatrix calculateQuaternion(double earthMagRefX, double earthMagRefY, double earthMagRefZ, MagStructure& magPrimeStructure);
         QuaternionEarthMatrix adjustOrientationToReference(QuaternionEarthMatrix qemRef);
-};   
+        QuaternionEarthMatrix yawQuaternion(MagStructure &calibrated);
+};
 #endif

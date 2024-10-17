@@ -2,6 +2,7 @@
 #include <Arduino.h>
 
 MagDataToQuaternion::MagDataToQuaternion() {
+
 }
 
 void MagDataToQuaternion::normalize(double &x, double &y, double &z) {
@@ -57,4 +58,12 @@ QuaternionEarthMatrix MagDataToQuaternion::adjustOrientationToReference(Quaterni
     qemFinal.y = qem.w * reference.y - qem.x * reference.z + qem.y * reference.w + qem.z * reference.x;
     qemFinal.z = qem.w * reference.z + qem.x * reference.y - qem.y * reference.x + qem.z * reference.w;
     return qemFinal;
+}
+QuaternionEarthMatrix MagDataToQuaternion::yawQuaternion(MagStructure& calibrated){
+    double azimuthRadians = atan2(calibrated.y, calibrated.x);
+
+    QuaternionEarthMatrix quaternion;
+    quaternion.fromAzimuth(azimuthRadians);
+
+    return quaternion;
 }

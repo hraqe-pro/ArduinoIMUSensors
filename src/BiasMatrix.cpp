@@ -6,4 +6,4 @@ const BiasMatrix globalBiasMatrix = {
 
 const BiasMatrix gyroBiasMatrix = {
     {0, 0, 0}
-}
+};

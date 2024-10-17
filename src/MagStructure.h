@@ -36,6 +36,8 @@ struct MagStructure
         }
     }
 
+    
+
     double x;
     double y;
     double z;

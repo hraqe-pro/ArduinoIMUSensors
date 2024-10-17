@@ -85,7 +85,7 @@ MagStructure Mag::Calibration() { //calibrated data
       corrected[i] *= globalCombinedMatrix.combinedMatrix[i][i];
     }*/
     
-    Mag::Normalize(calibrated[0], calibrated[1], calibrated[2]);
+    //Mag::Normalize(calibrated[0], calibrated[1], calibrated[2]);
    
     Serial.print("RAW: ");
     Serial.print(raw[0]);
